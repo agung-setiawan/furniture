@@ -19,15 +19,14 @@ export default class App extends Component {
     this.filtering = [];
     this.nbs = 1;
     this.delTimeTitle = "";
+    this.filterResult = [];
     this.selectStyle = false;
     this.state = {
       delTime: [1, 2, 7, 12, 14, 28, "ALL"],
       funitureStyles: [],
       funitureStylesFilter: [],
       furnitureList: [],
-      masterList: [],
-      filterName: "",
-      filterValue: []
+      masterList: []
     };
   }
 
@@ -41,6 +40,7 @@ export default class App extends Component {
       .get(`${Config.api}/v2/5c9105cb330000112b649af8`, null, config)
       .then(res => {
         if (res.data.furniture_styles.length > 0) {
+          console.log(res.data.products);
           this.setState({
             funitureStyles: res.data.furniture_styles,
             furnitureList: res.data.products,
@@ -50,7 +50,7 @@ export default class App extends Component {
       });
   };
 
-  addFilter = async event => {
+  furnitureStyleFilter = async event => {
     if (!this.filtering.includes(event.target.value)) {
       this.filtering.push(event.target.value);
       this.setState({ stylesSelected: this.filtering });
@@ -61,7 +61,17 @@ export default class App extends Component {
         this.setState({ stylesSelected: this.filtering });
       }
     }
-    console.log();
+
+    this.state.masterList.map((furniture, index) =>
+      furniture.furniture_style.includes(event.target.value)
+        ? this.setState({ filterResult: this.filterResult.push(furniture) })
+        : ""
+    );
+
+    this.setState({ furnitureList: [] });
+    this.setState({
+      furnitureList: [].concat(this.filterResult)
+    });
   };
 
   deliveryDaysFilter = async times => {
@@ -78,6 +88,10 @@ export default class App extends Component {
       this.setState({ furnitureList: [] });
       this.setState({ furnitureList: this.state.masterList, delTimeTitle: "" });
     }
+  };
+
+  clearFilter = () => {
+    window.location.reload(true);
   };
 
   render() {
@@ -121,7 +135,7 @@ export default class App extends Component {
                                 className="custom-control-input"
                                 value={item}
                                 id={item}
-                                onClick={this.addFilter}
+                                onClick={this.furnitureStyleFilter}
                               />
                               <label
                                 className="custom-control-label"
@@ -132,6 +146,14 @@ export default class App extends Component {
                             </div>
                           </MDBDropdownItem>
                         ))}
+                        <MDBDropdownItem key="0">
+                          <div
+                            style={{ textAlign: "center" }}
+                            onClick={this.clearFilter}
+                          >
+                            CLEAR
+                          </div>
+                        </MDBDropdownItem>
                       </MDBDropdownMenu>
                     </MDBDropdown>
                   </MDBCol>
