@@ -14,7 +14,7 @@ This platform built with is a REACT application It is a small platform to show d
 ```
 For live Version please visit this link :
 
-<a href="https://immense-journey-48645.herokuapp.com">immense-journey-48645.herokuapp.com</a>
+<a href="https://fast-refuge-50462.herokuapp.com/">Furniture App</a>
 
 ```
 
