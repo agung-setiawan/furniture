@@ -19,6 +19,7 @@ export default class App extends Component {
     this.filtering = [];
     this.nbs = 1;
     this.delTimeTitle = "";
+    this.selectStyle = false;
     this.state = {
       delTime: [1, 2, 7, 12, 14, 28, "ALL"],
       funitureStyles: [],
@@ -49,15 +50,18 @@ export default class App extends Component {
       });
   };
 
-  addFilter = event => {
+  addFilter = async event => {
     if (!this.filtering.includes(event.target.value)) {
       this.filtering.push(event.target.value);
+      this.setState({ stylesSelected: this.filtering });
     } else {
       const index = this.filtering.indexOf(event.target.value);
       if (index > -1) {
         this.filtering.splice(index, 1);
+        this.setState({ stylesSelected: this.filtering });
       }
     }
+    console.log();
   };
 
   deliveryDaysFilter = async times => {
@@ -96,7 +100,17 @@ export default class App extends Component {
                         color="primary"
                         className="full-width"
                       >
-                        Furniture Style
+                        {this.filtering.length > 0
+                          ? this.filtering.map((selected, index) => (
+                              <span
+                                key={index}
+                                className="badge badge-info"
+                                style={{ color: "#000 !important" }}
+                              >
+                                {selected}
+                              </span>
+                            ))
+                          : "Furniture Style"}
                       </MDBDropdownToggle>
                       <MDBDropdownMenu basic>
                         {this.state.funitureStyles.map(item => (

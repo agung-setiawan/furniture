@@ -78,3 +78,9 @@ body {
   margin-right: 7px;
   color: #3b85d2;
 }
+.badge {
+  margin-right: 5px;
+}
+.badge-info {
+  color: #000 !important;
+}
